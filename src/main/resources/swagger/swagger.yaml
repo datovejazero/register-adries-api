@@ -1,0 +1,187 @@
+# Example YAML to get you started quickly.
+# Be aware that YAML has indentation based scoping.
+# Code completion support is available so start typing for available options.
+swagger: '2.0'
+
+# This is your document metadata
+info:
+  version: "1.0.0"
+  title: Register adries API
+
+schemes:
+  - http
+
+basePath: /api/v1
+# Describe your paths here
+paths:
+  # This is a path endpoint. Change it.
+  /addresses:
+    # This is a HTTP operation
+    get:
+      # Describe this verb here. Note: you can use markdown
+      description: |
+        Return all the known addresses
+
+      produces:
+        - application/json
+
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Address'
+
+  /address:
+    get:
+      description: Returns the address if it exists.
+
+      produces:
+        - application/json
+
+      parameters:
+        - name: region
+          in: query
+          required: true
+          type: string
+        - name: country
+          in: query
+          required: true
+          type: string
+        - name: municipality
+          in: query
+          required: true
+          type: string
+        - name: streetName
+          in: query
+          required: true
+          type: string
+        - name: buildingNumber
+          in: query
+          required: true
+          type: integer
+
+      responses:
+        200:
+          description: Address found
+          schema:
+              $ref: '#/definitions/Address'
+        404:
+          description: Address not found
+
+  /municipality:
+    get:
+      description: Return all the municipalities with their id
+      produces:
+        - application/json
+
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Municipality'
+
+  /municipality/{municipalityId}:
+    get:
+      description: Return municipality name if municipality id is correct
+      produces:
+      - application/json
+
+      parameters:
+        - name: municipalityId
+          in: path
+          type: string
+          required: true
+          description: id of the municipality
+
+      responses:
+        200:
+          description: OK
+          schema:
+            type: string
+
+  /municipality/{municipalityId}/street:
+    get:
+      description: Return all the streets for a given municipality
+      produces:
+        - application/json
+
+      parameters:
+        - name: municipalityId
+          in: path
+          type: string
+          required: true
+          description: Id of the municipality
+
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/StreetName'
+
+  /municipality/{municipalityId}/street/{streetId}:
+    get:
+      description: Return all the building numbers on a given municipality and street
+      produces:
+        - application/json
+
+      parameters:
+        - name: municipalityId
+          in: path
+          type: string
+          required: true
+          description: Id of the municipality
+        - name: streetId
+          in: path
+          type: string
+          required: true
+          description: Id of a street
+
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              type: integer
+
+
+definitions:
+  Address:
+    type: object
+    properties:
+      region:
+        type: string
+      country:
+        type: string
+      municipality:
+        type: string
+      streetName:
+        type: string
+      buildingNumber:
+        type: integer
+
+  Municipality:
+    type: object
+    properties:
+      municipalityId:
+        type: string
+      municipalityName:
+        type: string
+
+  StreetName:
+    type: object
+    properties:
+      streetNameId:
+        type: string
+      streetName:
+        type: string

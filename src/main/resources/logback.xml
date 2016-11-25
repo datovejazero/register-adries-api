@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <property name="BASE" value = "/var/log/datahub/"/>
+
+    <appender name="LOG_FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${BASE}/register-adries-api_2.11/datahub-api.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>50MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
+    <logger name="org.github.dnvriend" level="debug"/>
+    <logger name="com.typesafe" level="debug"/>
+    <logger name="akka.http" level="debug"/>
+    <logger name="akka" level="debug"/>
+    <logger name="eu.ideata.datahub" level="info" />
+
+    <root level="INFO">
+        <appender-ref ref="LOG_FILE" />
+    </root>
+
+</configuration>
